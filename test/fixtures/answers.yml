@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  correctAnswer: MyString
+  userAnswer: MyString
+  expectedResult: false
+  user: one
+  question: one
+
+two:
+  correctAnswer: MyString
+  userAnswer: MyString
+  expectedResult: false
+  user: two
+  question: two
