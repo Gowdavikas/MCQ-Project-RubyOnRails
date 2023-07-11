@@ -2,11 +2,6 @@ require 'twilio-ruby'
 
 module Twilio
 
-    TWILIO_ACCOUNT_SID = 'AC0776dff6c722e0690743126300bfa324'
-    TWILIO_AUTH_TOKEN = '90516ccc26a0fdbe2c32e9e968926ba4'
-    TWILIO_SERVICE_ID = 'VA65b1bfe56bdb6aed13dacab81c8a444f'
-    TWILIO_FROM_PHONE = '+18148014239'
-
   class SmsService
 
     def initialize(to:, pin:)
@@ -15,20 +10,28 @@ module Twilio
     end
 
     def call
-      @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+      account_sid = ENV['TWILIO_ACCOUNT_SID']
+      auth_token = ENV['TWILIO_AUTH_TOKEN']
+      service_id = ENV['TWILIO_SERVICE_ID']
+      from_phone = ENV['TWILIO_FROM_PHONE']
+      @client = Twilio::REST::Client.new(account_sid, auth_token)
       verification = @client.verify
                             .v2
-                            .services(TWILIO_SERVICE_ID)
+                            .services(service_id)
                             .verifications
                             .create(to: @to, channel: 'sms')
     end
 
 
     def verify_passcode
-      @client = Twilio::REST::Client.new(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+      account_sid = ENV['TWILIO_ACCOUNT_SID']
+      auth_token = ENV['TWILIO_AUTH_TOKEN']
+      service_id = ENV['TWILIO_SERVICE_ID']
+      from_phone = ENV['TWILIO_FROM_PHONE']
+      @client = Twilio::REST::Client.new(account_sid, auth_token)
       verification_check = @client.verify
                                   .v2
-                                  .services(TWILIO_SERVICE_ID)
+                                  .services(service_id)
                                   .verification_checks
                                   .create(to: @to, code: @pin)
       return { status: verification_check.status }

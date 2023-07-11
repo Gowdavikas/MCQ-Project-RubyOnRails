@@ -1,21 +1,28 @@
 class Users::SessionsController < Devise::SessionsController
 
   respond_to :json
+
   
   def respond_with(user, _opts = {})
-    render json: {
-      status: {code: 200, message: 'Logged in sucessfully.'},
-      data: user
-    }, status: :ok
+    if user.valid_password?(params[:user][:password]) && user.otp_verified == true
+      sign_in user
+      render json: {
+        Message: "Logged in successfully."
+      }, status: :ok
+    else
+      render json: {
+        message: "Failed to login. Please make sure your OTP is verified and provide correct credentials."
+      }, status: 401
+    end
   end
 
   def respond_to_on_destroy
-    jwt_payload = JWT.decode(request.headers['token'].split(' ')[1], Rails.application.credentials.fetch(:secret_key_base)).first
+    jwt_payload = JWT.decode(request.headers['token'],Rails.application.credentials.fetch(:secret_key_base)).first
     current_user = User.find(jwt_payload['sub'])
     if current_user
       render json: {
-        message: "logged out successfully"
-      }, status: :ok
+        message: "User logged out successfully"
+      }, status: 200
     else
       render json: {
         message: "Couldn't find an active session."

@@ -1,12 +1,14 @@
 class AnswersController < ApplicationController
+    skip_before_action :verify_authenticity_token
 
+ 
     def index
         answer = Answer.all
         if answer.empty?
             render json:
             {
                 message: "NO answer details found..."
-            }, status: 400
+            }, status: 404
         else
             render json:
             {
@@ -28,7 +30,7 @@ class AnswersController < ApplicationController
             render json:
             {
                 message: "No detail found for specified id.."
-            }, status: 400
+            }, status: 404
         end
     end
 
@@ -40,7 +42,7 @@ class AnswersController < ApplicationController
             {
                 message: "New answer details saved successfully..",
                 answer: answer
-            }, status: 200
+            }, status: 201
         else
             render json:
             {
@@ -68,11 +70,11 @@ class AnswersController < ApplicationController
 
 
     def submit_answer
-        if current_user.user?
+        if current_user.role == "user"
           answer_params = params[:answer]
           question_id = answer_params[:question_id]
           answer = answer_params[:answer]
-          user_id = current_user.user
+          user_id = current_user[:id]
       
           store = {
             1 => "string",
@@ -138,11 +140,11 @@ class AnswersController < ApplicationController
             61 => "It checks if two objects have the same identity.",
             62 => "A web development framework",
             63 => "new",
-            64 => "schema.rb",
-            65 => "To create database tables",
-            66 => "rake db:migrate",
+            64 => "rails new <application_name>",
+            65 => "schema.rb",
+            66 => "To create database tables",
             67 => "app/views",
-            68 => "WEBrick",
+            68 => "app/views",
             69 => "routes.rb",
             70 => "Using the rails generate controller command",
             71 => "rails server",
@@ -190,7 +192,7 @@ class AnswersController < ApplicationController
 
     private
     def set_answer
-        answer = Answer.find(id: params[:id])
+        answer = Answer.find_by(id: params[:id])
         if answer
             return answer
         end

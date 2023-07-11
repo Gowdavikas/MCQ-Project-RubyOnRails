@@ -1,6 +1,5 @@
 class QuestionsController < ApplicationController
-
-    before_action :authenticate_user!
+    skip_before_action :verify_authenticity_token
 
     def index
 
@@ -15,7 +14,7 @@ class QuestionsController < ApplicationController
             render json:
             {
                 message: "No questions found"
-            }, status: 400
+            }, status: 404
         end
     end
 
@@ -36,13 +35,13 @@ class QuestionsController < ApplicationController
     end
 
     def create
-        if current_user.admin == true
+        if current_user.role == "admin"  || current_user.role == "teacher"
             question = Question.create(question_params)
             question.save
             render json:
             {
                 message: "New question created successfully by Admin...",
-                question: question
+                question: question.as_json
             }, status: 201
         else
             render json:
@@ -86,7 +85,7 @@ class QuestionsController < ApplicationController
     end
 
     def level_question
-        if current_user.user?
+        if current_user.role == "user"
           level = params[:level]
           code_language = params[:codeLanguage]
       

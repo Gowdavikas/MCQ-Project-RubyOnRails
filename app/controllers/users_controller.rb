@@ -7,13 +7,13 @@ class UsersController < ApplicationController
             render json:
             {
                 message: "All users retrived successfully...",
-                user: user
+                user: user.as_json(only: [:id, :name, :phonenumber, :email, :jti, :role])
             }, status: 200
         else
             render json:
             {
                 message: "No users found"
-            }, status: 400
+            }, status: 404
         end
     end
 
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
             render json:
             {
                 message: "Specified user retrived successfully...",
-                user: user
+                user: user.as_json(only: [:id, :name, :phonenumber, :email, :jti, :role])
             }, status: 200
         else
             render json:
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 
     def update
         user = set_user
-        if user.update
+        if user.update(user_params)
             render json:
             {
                 message: "Specified user updated successfully !",
@@ -90,6 +90,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:name,:user,:admin)
+        params.require(:user).permit(:name,:role,:phonenumber,:email,:password)
     end
 end

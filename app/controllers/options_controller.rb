@@ -12,7 +12,7 @@ class OptionsController < ApplicationController
             render json:
             {
                 message: "No option details found"
-            }, status: 400
+            }, status: 404
         end
     end
 
@@ -50,7 +50,7 @@ class OptionsController < ApplicationController
 
     def update
         option = set_option
-        if option.update
+        if option.update(option_params)
             render json:
             {
                 message: "Specified option updated successfully !",

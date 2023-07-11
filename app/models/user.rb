@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
+  has_many :question
+  has_one :academics
 
 
     enum role: { admin: "admin", user: "user", teacher: "teacher"}
@@ -17,7 +19,7 @@ class User < ApplicationRecord
     super
   end
 
-  has_many :question
+  
 
   validates :role, presence: true
 end
