@@ -1,17 +1,10 @@
 class User < ApplicationRecord
-  include Devise::JWT::RevocationStrategies::JTIMatcher
-  has_many :question
-  has_one :academics
-
-
-    enum role: { admin: "admin", user: "user", teacher: "teacher"}
-    before_validation :set_default_role
-
-    private
-    def set_default_role
-      self.role ||= "user"
-    end
+  has_many :questions
+  has_one :academic
   
+
+
+  include Devise::JWT::RevocationStrategies::JTIMatcher
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
@@ -19,7 +12,12 @@ class User < ApplicationRecord
     super
   end
 
-  
+    enum role: { admin: "admin", user: "user", teacher: "teacher"}
+    before_validation :set_default_role
+    validates :role, presence: true
 
-  validates :role, presence: true
+  private
+    def set_default_role
+      self.role ||= "user"
+    end
 end

@@ -1,3 +1,3 @@
 class Qualification < ApplicationRecord
-    has_one :academics
+    has_one :academic
 end

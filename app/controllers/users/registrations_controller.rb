@@ -1,16 +1,13 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-
-  skip_before_action :verify_authenticity_token
-  
   def create
     build_resource(sign_up_params)
 
-    resource.save
-    if resource.persisted?
+    if resource.valid?
+      resource.save
       Twilio::SmsService.new(to: resource.phonenumber, pin: '').call
       sign_up(resource_name, resource)
       token = request.env['warden-jwt_auth.token']
-      render json:{
+      render json: {
         message: "Signed Up Successfully",
         user: resource.as_json(only: [:id, :name, :email, :role]),
         token: token
@@ -20,6 +17,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
         message: resource.errors.full_messages
       }, status: 422
     end
+  rescue ArgumentError => e
+    render json: { error: e.message }, status: 400
   end
 
   private

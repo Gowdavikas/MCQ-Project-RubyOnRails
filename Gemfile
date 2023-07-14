@@ -84,3 +84,6 @@ gem "twilio-ruby"
 gem "rspec-rails"
 gem "simplecov"
 gem 'dotenv-rails', groups: [:development, :test]
+
+gem "activeadmin"
+gem "sassc"

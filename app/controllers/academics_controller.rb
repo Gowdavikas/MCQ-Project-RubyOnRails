@@ -1,4 +1,5 @@
 class AcademicsController < ApplicationController
+
     def index
         academic = Academic.all
         if academic.empty?
@@ -32,18 +33,27 @@ class AcademicsController < ApplicationController
     end
 
     def create
+        begin
         academic = Academic.create(academic_params)
         if academic.save
             render json:
             {
                 message: "New academic saved successfully",
-                academic: academic
+                academic: AcademicSerializer.new(academic),
+                interest: InterestSerializer.new(academic.interest),
+                qualification: QualificationSerializer.new(academic.qualification)
             }, status: 201
         else
             render json:
             {
-                message: "Sorry!, new academic failed to create"
+                message: "Sorry!, new academic failed to create",
+                error: academic.errors.full_messages
             }, status: 400
+        end
+
+        rescue JWT::DecodeError => e
+            Rails.logger.error("JWT Decode Error: #{e.message}")
+            render json: { error: "Token not provided  / invalid token" }, status: 400
         end
     end
 
@@ -89,6 +99,9 @@ class AcademicsController < ApplicationController
     end 
 
     def academic_params
-        params.permit(:college_name,:career_goals,:language,:other_language,:currently_working,:specialization,:experience,:availability,:cv,:govt_id,:interest_id,:qualification_id,:user_id)
+        jwt_payload = JWT.decode(request.headers['token'], Rails.application.credentials.fetch(:secret_key_base)).first
+        current_user = User.find(jwt_payload['sub'])
+        current_user_id = current_user.id
+        params.permit(:college_name,:career_goals,:language,:other_language,:currently_working,:specialization,:experience,:availability,:cv,:govt_id,:interest_id,:qualification_id).merge(user_id: current_user_id)
     end
 end

@@ -1,4 +1,6 @@
 class QualificationsController < ApplicationController
+    skip_before_action :verify_authenticity_token
+
     def index
         qualification = Qualification.all
         if qualification.empty?
@@ -79,7 +81,6 @@ class QualificationsController < ApplicationController
             }, status: 400
         end
     end
-
 
     def set_qualification
         qualification = Qualification.find_by(id: params[:id])

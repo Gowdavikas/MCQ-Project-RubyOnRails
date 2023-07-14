@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-    skip_before_action :verify_authenticity_token
+    # skip_before_action :verify_authenticity_token
 
  
     def index
@@ -70,6 +70,8 @@ class AnswersController < ApplicationController
 
 
     def submit_answer
+        jwt_payload = JWT.decode(request.headers['token'], Rails.application.credentials.fetch(:secret_key_base)).first
+        current_user = User.find(jwt_payload['sub'])
         if current_user.role == "user"
           answer_params = params[:answer]
           question_id = answer_params[:question_id]

@@ -31,7 +31,6 @@ RSpec.describe AnswersController, type: :request do
     end
   end
 
-
   describe "POST /create" do
     it "creates a new answer details" do
       user = User.create(name: "Vikas",role: "admin",phonenumber: "95913301819",email: "vikas@gmail.com",password:"12345678")
