@@ -92,7 +92,7 @@ class QuestionsController < ApplicationController
             render json: { error: "Token not provided" }, status: :bad_request
             return
         end
-        jwt_payload = JWT.decode(request.headers['token'], Rails.application.credentials.fetch(:secret_key_base)).first
+
         level = params[:level]
         code_language = params[:codeLanguage]
     

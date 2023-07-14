@@ -99,8 +99,6 @@ class AcademicsController < ApplicationController
     end 
 
     def academic_params
-        jwt_payload = JWT.decode(request.headers['token'], Rails.application.credentials.fetch(:secret_key_base)).first
-        current_user = User.find(jwt_payload['sub'])
         current_user_id = current_user.id
         params.permit(:college_name,:career_goals,:language,:other_language,:currently_working,:specialization,:experience,:availability,:cv,:govt_id,:interest_id,:qualification_id).merge(user_id: current_user_id)
     end
