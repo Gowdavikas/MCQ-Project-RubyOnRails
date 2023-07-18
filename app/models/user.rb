@@ -16,6 +16,10 @@ class User < ApplicationRecord
     before_validation :set_default_role
     validates :role, presence: true
 
+    def logged_out_once?
+      self.logged_out_once
+    end
+
   private
     def set_default_role
       self.role ||= "user"

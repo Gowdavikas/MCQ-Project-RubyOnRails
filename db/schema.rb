@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_12_123225) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_052346) do
   create_table "academics", force: :cascade do |t|
     t.string "college_name"
     t.string "career_goals"
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_123225) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "academic_status"
     t.index ["interest_id"], name: "index_academics_on_interest_id"
     t.index ["qualification_id"], name: "index_academics_on_qualification_id"
     t.index ["user_id"], name: "index_academics_on_user_id"
@@ -140,8 +141,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_12_123225) do
     t.string "role"
     t.string "phonenumber"
     t.boolean "otp_verified"
-    t.string "authentication_token"
-    t.index ["authentication_token"], name: "index_users_on_authentication_token"
+    t.boolean "logged_out_once", default: false
+    t.boolean "academic_status"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
