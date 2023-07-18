@@ -1,4 +1,5 @@
 class AcademicsController < ApplicationController
+    skip_before_action :verify_authenticity_token
 
     def index
         academic = Academic.all
@@ -36,6 +37,7 @@ class AcademicsController < ApplicationController
         begin
         academic = Academic.create(academic_params)
         if academic.save
+            current_user.update(academic_status: true)
             render json:
             {
                 message: "New academic saved successfully",

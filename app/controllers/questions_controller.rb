@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-    
+    # before_action :authenticate_user!
     def index
         question = Question.all
         if question.present?
@@ -33,8 +33,6 @@ class QuestionsController < ApplicationController
     end
 
     def create
-        jwt_payload = JWT.decode(request.headers['token'], Rails.application.credentials.fetch(:secret_key_base)).first
-        current_user = User.find(jwt_payload['sub'])
         if current_user.role == "admin"
             question = Question.create(question_params)
             question.save
@@ -47,7 +45,6 @@ class QuestionsController < ApplicationController
             render json:
             {
                 message: "Sorry, ensure whether the user having admin access...."
-                # error: question.errors.full_messages
             }, status: 400
         end
     end
@@ -86,32 +83,29 @@ class QuestionsController < ApplicationController
     end
 
     def level_question
-        begin
         jwt_token = request.headers['token'] || params[:token]
-        if jwt_token.nil?
-            render json: { error: "Token not provided" }, status: :bad_request
-            return
-        end
-
-        level = params[:level]
-        code_language = params[:codeLanguage]
-    
-        questions = Question.where(level: level, codeLanguage: code_language)
-        if questions.present?
-            render json: 
-            {
-                message: "Questions of #{level} and #{code_language} language retrieved successfully...",
-                questions: questions.as_json(only: [:id, :question], include: { option: { only: [:id,:option_1,:option_2,:option_3,:option_4] } })
-            }, status: 200
+        if jwt_token
+            token = request.headers['token']&.split&.last
+            payload= JWT.decode(token, nil, false).first    
+                if current_user.role == 'user'
+                    level = params[:level]
+                    code_language = params[:codeLanguage]
+                    questions = Question.where(level: level, codeLanguage: code_language)
+                    if questions.present?
+                        render json: {
+                        message: "Questions of #{level} and #{code_language} language retrieved successfully...",
+                        data: questions.as_json(only: [:id, :question], include: { option: { only: [:id, :option_1, :option_2, :option_3, :option_4] } })
+                        }, status: 200
+                    else
+                        render json: {
+                        message: "No questions found for level #{level} and code language #{code_language}"
+                        }, status: 400
+                    end
+                else
+                    render json: { error: "Invalid user" }, status: :unauthorized
+                end
         else
-            render json: 
-            {
-                message: "No questions found for level #{level} and code language #{code_language}"
-            }, status: 400
-        end
-        rescue JWT::DecodeError => e
-            Rails.logger.error("JWT Decode Error: #{e.message}")
-            render json: { error: "Invalid token" }, status: :unauthorized
+            render json: { error: "Token not provided" }, status: 400
         end
     end
       

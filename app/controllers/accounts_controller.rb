@@ -1,14 +1,17 @@
 class AccountsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def otp_verify
     begin
-      jwt_payload = JWT.decode(request.headers['token'], Rails.application.credentials.fetch(:secret_key_base)).first
-      current_user = User.find(jwt_payload['sub'])
       sms_service = Twilio::SmsService.new(to: current_user.phonenumber, pin: verification_params[:pin])
       verification_check = sms_service.verify_passcode
-
+      token = request.headers['token']
       if verification_check == { status: "approved" }
         current_user.update(otp_verified: true)
-        render json: verification_check
+        render json: {
+          message: "OTP Verified",
+          token: token
+        }, status: :ok
       else
         render json: { error: "Invalid token or PIN" }, status: :bad_request
       end
@@ -18,8 +21,7 @@ class AccountsController < ApplicationController
       render json: { error: "Token is not matching with the pin" }, status: 400
     rescue JWT::DecodeError => e
       Rails.logger.error("JWT Decode Error: #{e.message}")
-
-      render json: { error: "Invalid token" }, status: :unauthorized
+      render json: { error: "Invalid token or token has expired" }, status: :unauthorized
     end
   end
 
