@@ -1,5 +1,5 @@
 class QuestionsController < ApplicationController
-    # before_action :authenticate_user!
+
     def index
         question = Question.all
         if question.present?
@@ -94,7 +94,7 @@ class QuestionsController < ApplicationController
                     if questions.present?
                         render json: {
                         message: "Questions of #{level} and #{code_language} language retrieved successfully...",
-                        data: questions.as_json(only: [:id, :question], include: { option: { only: [:id, :option_1, :option_2, :option_3, :option_4] } })
+                        data: questions.as_json(only: [:id, :question], include: { options: { only: [:option]} })
                         }, status: 200
                     else
                         render json: {

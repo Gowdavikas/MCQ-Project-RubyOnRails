@@ -85,6 +85,10 @@ GEM
     arbre (1.6.0)
       activesupport (>= 3.0.0, < 7.1)
       ruby2_keywords (>= 0.0.2, < 1.0)
+    arctic_admin (3.3.0)
+      activeadmin (>= 1.1.0, < 3.0)
+      font-awesome-sass (~> 5.0)
+      jquery-rails
     bcrypt (3.1.19)
     bindex (0.8.1)
     bootsnap (1.16.0)
@@ -101,8 +105,16 @@ GEM
       xpath (~> 3.2)
     case_transform (0.2)
       activesupport
+    coffee-rails (5.0.0)
+      coffee-script (>= 2.2.0)
+      railties (>= 5.2.0)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.12.2)
     concurrent-ruby (1.2.2)
     crass (1.0.6)
+    csv (3.2.7)
     date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
@@ -132,6 +144,7 @@ GEM
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
     erubi (1.12.0)
+    execjs (2.8.1)
     faraday (2.7.9)
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
@@ -139,6 +152,8 @@ GEM
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
     ffi (1.15.5-x64-mingw-ucrt)
+    font-awesome-sass (5.15.1)
+      sassc (>= 1.11)
     formtastic (4.0.0)
       actionpack (>= 5.2.0)
     formtastic_i18n (0.7.0)
@@ -312,6 +327,8 @@ GEM
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2023.3)
       tzinfo (>= 1.0.0)
+    uglifier (4.2.0)
+      execjs (>= 0.3.0, < 3)
     warden (1.2.9)
       rack (>= 2.0.9)
     warden-jwt_auth (0.8.0)
@@ -343,8 +360,11 @@ DEPENDENCIES
   active_model_serializers
   activeadmin
   activestorage
+  arctic_admin (~> 3.3.0)
   bootsnap
   capybara
+  coffee-rails
+  csv
   debug
   devise
   devise-jwt
@@ -365,6 +385,7 @@ DEPENDENCIES
   turbo-rails
   twilio-ruby
   tzinfo-data
+  uglifier
   web-console
   webdrivers
 

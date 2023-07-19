@@ -1,18 +1,14 @@
 ActiveAdmin.register Option do
 
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
-  permit_params :option_1, :option_2, :option_3, :option_4, :question_id
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:option_1, :option_2, :option_3, :option_4, :question_id]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
+  permit_params :option, :question_id
   
+  form do |f|
+    f.inputs do
+      f.input :question_id, as: :select, collection: Question.pluck(:question, :id), include_blank: true
+    end
+    f.has_many :options, allow_destroy: true, new_record: 'Add Options' do |o|
+      o.input :option, include_blank: true
+    end
+    f.actions
+  end
 end

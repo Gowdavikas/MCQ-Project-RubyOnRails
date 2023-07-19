@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_18_052346) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_19_070957) do
   create_table "academics", force: :cascade do |t|
     t.string "college_name"
     t.string "career_goals"
@@ -104,13 +104,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_18_052346) do
   end
 
   create_table "options", force: :cascade do |t|
-    t.string "option_1"
-    t.string "option_2"
-    t.string "option_3"
-    t.string "option_4"
     t.integer "question_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "option"
     t.index ["question_id"], name: "index_options_on_question_id"
   end
 

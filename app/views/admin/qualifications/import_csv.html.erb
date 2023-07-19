@@ -1,0 +1,9 @@
+<%= form_for @qualification, url: import_csv_admin_qualifications_path, method: :post, html: { multipart: true } do |f| %>
+  <div class="form-group">
+    <%= label_tag :csv_file, 'CSV File' %>
+    <%= f.file_field :csv_file, class: 'form-control-file', accept: '.csv' %>
+  </div>
+  <br>
+  <br>
+  <%= f.submit 'Import CSV', class: 'btn btn-primary' %>
+<% end %>
