@@ -6,6 +6,5 @@ class Academic < ApplicationRecord
   has_one_attached :cv
   has_one_attached :govt_id
 
-  validates :user_id, uniqueness: { message: "User already has an academic record" }
-
+  validates :user_id, uniqueness: { on: :create, message: "User already has an academic record" }
 end

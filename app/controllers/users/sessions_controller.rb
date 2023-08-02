@@ -10,7 +10,9 @@ class Users::SessionsController < Devise::SessionsController
       token = request.env['warden-jwt_auth.token']
       sign_in user
       render json: {
-        Message: "Name: #{user.name}, role: #{user.role} logged in successfully.",
+        Message: "Logged in successfully.",
+        Name: user.name,
+        Role: user.role,
         token: token
       }, status: 200
     else
@@ -40,7 +42,7 @@ class Users::SessionsController < Devise::SessionsController
           user.update(logged_out_once: true)
           render json: { message: "Name: #{user.name}, Logged out successfully" }, status: 200
         else
-          render json: { message: 'Invalid user or already logged out once' }, status: 400
+          render json: { message: 'User already logged out once, please login-in again' }, status: 400
         end
       else
         render json: { message: 'Invalid token' }, status: :unprocessable_entity

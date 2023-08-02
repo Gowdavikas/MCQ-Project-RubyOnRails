@@ -3,17 +3,17 @@ class InterestsController < ApplicationController
     
     def index
         interest = Interest.all
-        if interest.empty?
-            render json:
-            {
-                message: "No interest found"
-            }, status: 404
-        else
+        if interest.any?
             render json:
             {
                 message: "All interests retrived successfully !",
                 interest: interest
             }, status: 200
+        else
+            render json:
+            {
+                message: "No interest found"
+            }, status: 404
         end
     end
 
@@ -34,7 +34,8 @@ class InterestsController < ApplicationController
     end
 
     def create
-        if interest = Interest.create(interest_params)
+        interest = Interest.create(interest_params)
+        if interest.save
             render json:
             {
                 message: "Successfully created new interest",

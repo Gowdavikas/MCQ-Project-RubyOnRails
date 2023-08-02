@@ -3,12 +3,7 @@ class AcademicsController < ApplicationController
 
     def index
         academic = Academic.all
-        if academic.empty?
-            render json:
-            {
-                message: "No academics found"
-            }, status: 404
-        else
+        if academic
             render json:
             {
                 message: "All academics retrived successfully",
@@ -33,6 +28,7 @@ class AcademicsController < ApplicationController
         end
     end
 
+    
     def create
         begin
         academic = Academic.create(academic_params)
@@ -45,7 +41,7 @@ class AcademicsController < ApplicationController
                 interest: InterestSerializer.new(academic.interest),
                 qualification: QualificationSerializer.new(academic.qualification)
             }, status: 201
-        else
+        else 
             render json:
             {
                 message: "Sorry!, new academic failed to create",
@@ -67,11 +63,6 @@ class AcademicsController < ApplicationController
                 message: "Specified academic details updates successfully",
                 academic: academic
             }, status: 200
-        else
-            render json:
-            {
-                message: "Sorry!,specified academic details failed to update "
-            }, status: 400
         end
     end
 

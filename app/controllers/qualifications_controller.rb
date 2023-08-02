@@ -3,17 +3,17 @@ class QualificationsController < ApplicationController
 
     def index
         qualification = Qualification.all
-        if qualification.empty?
-            render json:
-            {
-                message: "No qualifications found"
-            }, status: 404
-        else
+        if qualification.any?
             render json:
             {
                 message: "All qualification retrived successfully",
                 qualification: qualification
             }, status: 200
+        else
+            render json:
+            {
+                message: "No qualifications found"
+            }, status: 404
         end
     end
 

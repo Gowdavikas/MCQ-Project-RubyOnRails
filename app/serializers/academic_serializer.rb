@@ -4,14 +4,14 @@ class AcademicSerializer
 
 
   attributes :cv do |resume|
-    if resume.cv.present?
+    if resume.cv.attached?
       host = Rails.env.development? ? "http://localhost:3000" : ENV["BASE_URL"]
       host + Rails.application.routes.url_helpers.rails_blob_url(resume.cv, only_path: true)
     end
   end
 
   attributes :govt_id do |goverment_id|
-    if goverment_id.govt_id.present?
+    if goverment_id.govt_id.attached?
       host = Rails.env.development? ? "http://localhost:3000" : ENV["BASE_URL"]
       host + Rails.application.routes.url_helpers.rails_blob_url(goverment_id.govt_id, only_path: true)
     end

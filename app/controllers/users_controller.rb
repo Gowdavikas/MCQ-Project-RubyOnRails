@@ -1,19 +1,13 @@
 class UsersController < ApplicationController
 
     def index
-
         user = User.all
-        if user.present?
+        if user.any?
             render json:
             {
                 message: "All users retrived successfully...",
                 user: user.as_json(only: [:id, :name, :phonenumber, :email, :jti, :role])
             }, status: 200
-        else
-            render json:
-            {
-                message: "No users found"
-            }, status: 404
         end
     end
 
@@ -29,22 +23,6 @@ class UsersController < ApplicationController
             render json:
             {
                 message: "No users found for this id"
-            }, status: 400
-        end
-    end
-
-    def create
-        user = User.create(user_params)
-        if user.save
-            render json:
-            {
-                message: "New user created successfully...",
-                user: user
-            }, status: 201
-        else
-            render json:
-            {
-                message: "Sorry, new user couldn't save successfully..."
             }, status: 400
         end
     end

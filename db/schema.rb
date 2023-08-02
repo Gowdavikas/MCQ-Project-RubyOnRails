@@ -25,7 +25,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_070957) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "academic_status"
     t.index ["interest_id"], name: "index_academics_on_interest_id"
     t.index ["qualification_id"], name: "index_academics_on_qualification_id"
     t.index ["user_id"], name: "index_academics_on_user_id"
@@ -104,6 +103,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_19_070957) do
   end
 
   create_table "options", force: :cascade do |t|
+    t.string "option_1"
+    t.string "option_2"
+    t.string "option_3"
+    t.string "option_4"
     t.integer "question_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

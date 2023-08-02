@@ -50,4 +50,3 @@ ActiveAdmin.register Question do
       end
     end
 end
-  

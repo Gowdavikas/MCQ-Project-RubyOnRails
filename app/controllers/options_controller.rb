@@ -2,7 +2,7 @@ class OptionsController < ApplicationController
 
     def index
         option = Option.all
-        if option.present?
+        if option.any?
             render json:
             {
                 message: "All options retrived successfully...",
@@ -28,7 +28,7 @@ class OptionsController < ApplicationController
             render json:
             {
                 message: "No options found for this id"
-            }, status: 400
+            }, status: 404
         end
     end
 
