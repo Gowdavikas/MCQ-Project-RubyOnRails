@@ -7,6 +7,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       resource.save
       Twilio::SmsService.new(to: resource.phonenumber, pin: '').call
       sign_up(resource_name, resource)
+      resource.update(logged_out_once: true)
       token = request.env['warden-jwt_auth.token']
       render json: {
         message: "Signed Up Successfully",
