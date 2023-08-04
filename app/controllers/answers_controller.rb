@@ -19,7 +19,6 @@ class AnswersController < ApplicationController
     end
 
     def show
-        user = auth_user
         answer = set_answer
         if answer
             render json:
@@ -36,7 +35,6 @@ class AnswersController < ApplicationController
     end
 
     def create
-        user = auth_user
         answer = Answer.create(answer_params)
         if answer.save
             render json:

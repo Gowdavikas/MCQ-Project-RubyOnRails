@@ -6,9 +6,10 @@ class Users::SessionsController < Devise::SessionsController
   
   
   def respond_with(user, _opts = {})
-    if user.valid_password?(params[:user][:password]) && user.academic_status == true && user.otp_verified == true
+    if user.valid_password?(params[:user][:password]) && user.academic_status == true && user.otp_verified == true && user.logged_out_once == true
       token = request.env['warden-jwt_auth.token']
       sign_in user
+      user.update(logged_out_once: false)
       render json: {
         Message: "Logged in successfully.",
         Name: user.name,
@@ -17,7 +18,7 @@ class Users::SessionsController < Devise::SessionsController
       }, status: 200
     else
       render json: {
-        message: "Failed to login. Please make sure your OTP is verified and Academic-form is filled and provide correct credentials."
+        message: "Failed to login. User may already logged in OR Please make sure your OTP is verified."
       }, status: 401
     end
   end
@@ -44,12 +45,10 @@ class Users::SessionsController < Devise::SessionsController
         else
           render json: { message: 'User already logged out once, please login-in again' }, status: 400
         end
-      else
-        render json: { message: 'Invalid token' }, status: :unprocessable_entity
       end
     rescue JWT::DecodeError => e
       Rails.logger.error("JWT Decode Error: #{e.message}")
-      render json: { message: 'Invalid token' }, status: :unprocessable_entity
+      render json: { message: 'Invalid token' }, status: 400
     end
   end
 
@@ -58,9 +57,5 @@ class Users::SessionsController < Devise::SessionsController
   def verify_signed_out_user
     return unless user_signed_in?
     render json: { message: 'You are already signed in. Please sign out first.' }, status: :unprocessable_entity
-  end
-
-  def render_invalid_token_response
-    render json: { message: 'Invalid token' }, status: :unprocessable_entity
   end
 end

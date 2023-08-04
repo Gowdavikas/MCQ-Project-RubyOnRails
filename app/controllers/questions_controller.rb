@@ -1,8 +1,7 @@
 class QuestionsController < ApplicationController
-    before_action :authenticate_user
+    before_action :authenticate_user, only: [:index, :show, :level_question]
 
     def index
-        user = auth_user
         page = params[:page].to_i || 1
         per_page = params[:perpage].to_i || 25
       
