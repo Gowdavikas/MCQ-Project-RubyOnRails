@@ -28,7 +28,6 @@ class QuestionsController < ApplicationController
 
 
     def show
-        user = auth_user
         question = set_question
         if question
             render json:
