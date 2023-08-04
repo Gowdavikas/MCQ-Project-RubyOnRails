@@ -92,3 +92,5 @@ gem 'arctic_admin', '~>3.3.0'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'csv'
+
+gem 'database_cleaner'

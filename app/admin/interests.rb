@@ -8,10 +8,10 @@ ActiveAdmin.register Interest do
     end
   f.actions
   end
-  member_action :download_csv, method: :get do
-     interest = Interest.find(params[:id])
-     send_data interest.to_csv, filename: "interest_#{interest.id}.csv"
-    end
+  # member_action :download_csv, method: :get do
+  #    interest = Interest.find(params[:id])
+  #    send_data interest.to_csv, filename: "interest_#{interest.id}.csv"
+  #   end
     
     action_item :import_csv, only: :index do
      link_to 'Import CSV', new_import_csv_admin_interests_path
@@ -34,8 +34,6 @@ ActiveAdmin.register Interest do
       rescue StandardError => e
       redirect_to new_import_csv_admin_interests_path, alert: "Error importing CSV file: #{e.message}"
       end
-     else
-      redirect_to new_import_csv_admin_interests_path, alert: 'No CSV file was uploaded.'
      end
      else
      redirect_to new_import_csv_admin_interests_path, alert: 'No CSV file was uploaded.'

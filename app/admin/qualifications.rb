@@ -2,11 +2,6 @@ require 'csv'
 ActiveAdmin.register Qualification do
 
   permit_params :name
-
-  member_action :download_csv, method: :get do
-    qualification = Qualification.find(params[:id])
-    send_data interest.to_csv, filename: "interest_#{interest.id}.csv"
-   end
    
    action_item :import_csv, only: :index do
     link_to 'Import CSV', new_import_csv_admin_qualifications_path
@@ -29,8 +24,6 @@ ActiveAdmin.register Qualification do
      rescue StandardError => e
      redirect_to new_import_csv_admin_qualifications_path, alert: "Error importing CSV file: #{e.message}"
      end
-    else
-     redirect_to new_import_csv_admin_qualifications_path, alert: 'No CSV file was uploaded.'
     end
     else
     redirect_to new_import_csv_admin_qualifications_path, alert: 'No CSV file was uploaded.'

@@ -42,8 +42,6 @@ ActiveAdmin.register Question do
           rescue StandardError => e
             redirect_to new_import_csv_admin_questions_path, alert: "Error importing CSV file: #{e.message}"
           end
-        else
-        redirect_to new_import_csv_admin_question_path, alert: 'No CSV file was uploaded.'
         end
       else
         redirect_to new_import_csv_admin_questions_path, alert: 'No CSV file was uploaded.'

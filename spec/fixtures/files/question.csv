@@ -1,0 +1,5 @@
+question,level,codeLanguage,options
+What is the use of gem csv in rails?,level_1,Ruby,"sjshdb,ahahsfas, sgsgsjs,shafsfa,shsss"
+What is the purpose of using the each method in Ruby?,level_1,Ruby,"To define a new To handle exceptions.class., To iterate over a collection of elements., To concatenate strings., To handle exceptions."
+Which keyword is used to define a method that does not return any value in Java?,level_1,Java-full-stack,"void, none, null, int"
+How do you create an object of a class in Java?,level_2,Java-full-stack,"new Object(), create Object(), Object.create(), new Classname()"
