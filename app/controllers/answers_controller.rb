@@ -1,5 +1,5 @@
 class AnswersController < ApplicationController
-    before_action :authenticate_user
+    before_action :authenticate_user, only: [:show,:create,:submit_answer]
 
 
     def index
