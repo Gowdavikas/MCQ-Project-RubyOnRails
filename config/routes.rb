@@ -11,50 +11,54 @@ Rails.application.routes.draw do
   
   get "getquestion", to: "questions#level_question"
 
+  QUESTION_ROUTE = "question/:id"
   get "questions", to: "questions#index"
-  get "question/:id", to: "questions#show"
-  put "question/:id", to: "questions#update"
+  get QUESTION_ROUTE, to: "questions#show"
+  put QUESTION_ROUTE, to: "questions#update"
   post "question", to: "questions#create"
-  delete "question/:id", to: "questions#destroy"
+  delete QUESTION_ROUTE, to: "questions#destroy"
 
-
+  OPTION_ROUTE = "option/:id"
   get "options", to: "options#index"
-  get "option/:id", to: "options#show"
-  put "option/:id", to: "options#update"
+  get OPTION_ROUTE, to: "options#show"
+  put OPTION_ROUTE, to: "options#update"
   post "option", to: "options#create"
-  delete "option/:id", to: "options#destroy"
+  delete OPTION_ROUTE, to: "options#destroy"
  
-
+  ANSWER_ROUTE = "answer/:id"
   post "submitanswer", to: "answers#submit_answer"
   get "answers", to: "answers#index"
-  get "answer/:id", to: "answers#show"
-  patch "answer/:id", to: "answers#update"
+  get ANSWER_ROUTE, to: "answers#show"
+  patch ANSWER_ROUTE, to: "answers#update"
   post "answer", to: "answers#create"
 
 
+  USER_ROUTE = "user/:id"
   get "users", to: "users#index"
-  get "user/:id", to: "users#show"
-  put "user/:id", to: "users#update"
+  get USER_ROUTE, to: "users#show"
+  put USER_ROUTE, to: "users#update"
   post "user", to: "users#create"
-  delete "user/:id", to: "users#destroy"
+  delete USER_ROUTE, to: "users#destroy"
 
+  INTEREST_ROUTE = "interest/:id"
   get "interests", to: "interests#index"
-  get "interest/:id", to: "interests#show"
+  get INTEREST_ROUTE, to: "interests#show"
   post "interest", to: "interests#create"
-  put "interest/:id", to: "interests#update"
-  delete "interest/:id", to: "interests#destroy"
+  put INTEREST_ROUTE, to: "interests#update"
+  delete INTEREST_ROUTE, to: "interests#destroy"
 
+  QUALIFICATION_ROUTE = "qualification/:id"
   get "qualifications", to: "qualifications#index"
-  get "qualification/:id", to: "qualifications#show"
+  get QUALIFICATION_ROUTE, to: "qualifications#show"
   post "qualification", to: "qualifications#create"
-  put "qualification/:id", to: "qualifications#update"
-  delete "qualification/:id", to: "qualifications#destroy"
+  put QUALIFICATION_ROUTE, to: "qualifications#update"
+  delete QUALIFICATION_ROUTE, to: "qualifications#destroy"
 
+  ACADEMIC_ROUTE = "academic/:id"
   get "academics", to: "academics#index"
-  get "academic/:id", to: "academics#show"
+  get ACADEMIC_ROUTE, to: "academics#show"
   post "academic", to: "academics#create"
-  put "academic/:id", to: "academics#update"
-  delete "academic/:id", to: "academics#destroy"
-  
+  put ACADEMIC_ROUTE, to: "academics#update"
+  delete ACADEMIC_ROUTE, to: "academics#destroy"
   
 end

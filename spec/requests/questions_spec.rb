@@ -5,7 +5,7 @@ RSpec.describe QuestionsController, type: :request do
     context "when valid pagination parameters are provided" do
       before do
         30.times do |i|
-          Question.create(question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby")
+          Question.create(question: "What is rspec in ruby on rails?",level: "level_1",codeLanguage: "Ruby")
         end
       end
 
@@ -31,14 +31,14 @@ RSpec.describe QuestionsController, type: :request do
   describe "GET /show" do
     it "returns a specific question details" do
       allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
-      question = Question.create(question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby")
+      question = Question.create(question: "What is rspec in ruby??",level: "level_1",codeLanguage: "Ruby")
       get "/question/#{question.id}"
       expect(response).to have_http_status(200)
     end
 
     it "returns an error message if specified details not found" do
       allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
-      question = Question.create(question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby")
+      question = Question.create(question: "What is rspec in ruby???",level: "level_1",codeLanguage: "Ruby")
       get "/question/invali_id"
       expect(response).to have_http_status(400)
     end
@@ -49,7 +49,7 @@ RSpec.describe QuestionsController, type: :request do
       user = User.create(name: "User", role: "admin", email: "admin123@example.com", password: "password")
       allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-      question_params = {question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby"}
+      question_params = {question: "What is rspec?",level: "level_1",codeLanguage: "Ruby"}
       post "/question", params: {question: question_params}
       expect(response).to have_http_status(201)
     end
@@ -58,7 +58,7 @@ RSpec.describe QuestionsController, type: :request do
       user = User.create(name: "User", role: "user", email: "user@example.com", password: "password")
       allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
-      question_params = {question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby"}
+      question_params = {question: "What is ruby?",level: "level_1",codeLanguage: "Ruby"}
       post "/question", params: {question: question_params}
       expect(response).to have_http_status(400)
     end
@@ -67,7 +67,7 @@ RSpec.describe QuestionsController, type: :request do
   describe "PUT /update" do
     it " updates the specified question" do
       allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
-      question = Question.create(question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby")
+      question = Question.create(question: "What is ruby on rails?",level: "level_1",codeLanguage: "Ruby")
       params = {question: "Gem to add images in ruby?",level: "level_2",codeLanguage: "Ruby"}
       put "/question/#{question.id}", params:{question: params}
       expect(response).to have_http_status(200)
@@ -85,20 +85,21 @@ RSpec.describe QuestionsController, type: :request do
   describe "DESTROY /delete" do
     it "Deletes the specific question" do
       allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
-      question = Question.create(question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby")
+      question = Question.create(question: "What is rspec in python?",level: "level_1",codeLanguage: "Ruby")
       delete "/question/#{question.id}"
       expect(response).to have_http_status(200)
     end
 
     it "returns an error message if question id is not found" do
       allow_any_instance_of(ApplicationController).to receive(:authenticate_user).and_return(true)
-      question = Question.create(question: "What is rspec in ruby?",level: "level_1",codeLanguage: "Ruby")
+      question = Question.create(question: "What is rspec in rb?",level: "level_1",codeLanguage: "Ruby")
       delete "/question/invalid_id"
       expect(response).to have_http_status(400)
     end
   end
 
   describe "GET /getquestion" do
+    GET_QUESTION = "/getquestion"
     context "when user is authenticated and has 'user' role" do
 
       before do
@@ -114,7 +115,7 @@ RSpec.describe QuestionsController, type: :request do
       it "returns random questions based on level and codeLanguage" do
         level = "level_1"
         code_language = "Ruby"
-        get "/getquestion", params: { level: level, codeLanguage: code_language }, headers: { "token" => @valid_jwt_token }
+        get GET_QUESTION, params: { level: level, codeLanguage: code_language }, headers: { "token" => @valid_jwt_token }
 
         expect(response).to have_http_status(200)
       end
@@ -122,7 +123,7 @@ RSpec.describe QuestionsController, type: :request do
       it "returns an error message if no questions are found for the specified criteria" do
         level = "level_99"
         code_language = "Python"
-        get "/getquestion", params: { level: level, codeLanguage: code_language }, headers: { "token" => @valid_jwt_token }
+        get GET_QUESTION, params: { level: level, codeLanguage: code_language }, headers: { "token" => @valid_jwt_token }
 
         expect(response).to have_http_status(404)
       end
@@ -130,7 +131,7 @@ RSpec.describe QuestionsController, type: :request do
 
     context "when user is not authenticated" do
       it "returns unauthorized status" do
-        get "/getquestion", params: { level: "level_1", codeLanguage: "Ruby" }, headers: { "token" => @valid_jwt_token }
+        get GET_QUESTION, params: { level: "level_1", codeLanguage: "Ruby" }, headers: { "token" => @valid_jwt_token }
 
         expect(response).to have_http_status(:unauthorized)
       end

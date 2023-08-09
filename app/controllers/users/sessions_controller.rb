@@ -41,6 +41,7 @@ class Users::SessionsController < Devise::SessionsController
         if user.present? && !user.logged_out_once?
           sign_out user
           user.update(logged_out_once: true)
+          # request.env['warden-jwt_auth.token'] = nil
           render json: { message: "Name: #{user.name}, Logged out successfully" }, status: 200
         else
           render json: { message: 'User already logged out once, please login-in again' }, status: 400
